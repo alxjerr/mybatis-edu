@@ -1,5 +1,6 @@
 package com.mybatis.edu.mapper;
 
+import com.mybatis.edu.pojo.QueryVo;
 import com.mybatis.edu.pojo.User;
 
 import java.util.List;
@@ -15,4 +16,30 @@ public interface UserMapper {
 
     void insertUser(User user);
 
+    /**
+     * 传递包装pojo
+     * @param vo
+     * @return
+     */
+    List<User> getUserByQueryVo(QueryVo vo);
+
+    /**
+     * 测试动态SQL标签
+     * @param user
+     * @return
+     */
+    List<User> getUserByPojo(User user);
+
+    /**
+     * foreach标签测试
+     * @param vo
+     * @return
+     */
+    List<User> getUserByIds(QueryVo vo);
+
+    /**
+     * 一对多关联查询
+     * @return
+     */
+    List<User> getUserOrder();
 }

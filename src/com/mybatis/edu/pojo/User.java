@@ -1,6 +1,7 @@
 package com.mybatis.edu.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
 
@@ -9,6 +10,9 @@ public class User {
 	private String sex;// 性别
 	private Date birthday;// 生日
 	private String address;// 地址
+
+
+	private List<Order> orders;
 
 	public Integer getId() {
 		return id;
@@ -48,6 +52,14 @@ public class User {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 	@Override

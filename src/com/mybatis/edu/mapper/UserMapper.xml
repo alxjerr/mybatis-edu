@@ -16,6 +16,15 @@
  -->
 <mapper namespace="com.mybatis.edu.mapper.UserMapper">
 
+    <!-- SQL片段定义 -->
+    <sql id="user_sql">
+      id,
+      username,
+      birthday,
+      sex,
+      address
+    </sql>
+
     <!--
         id:sql id,SQL语句的唯一标识
         parameterType:入参的数据类型
@@ -23,11 +32,8 @@
     -->
     <select id="getUserById" parameterType="int" resultType="com.mybatis.edu.pojo.User">
         select
-          id,
-          username,
-          birthday,
-          sex,
-          address
+        <!-- sql 片段使用：引用定义好的SQL片段的id -->
+        <include refid="user_sql"/>
         from USER
         where id = #{id2}
     </select>
@@ -36,11 +42,7 @@
     <!-- 如果返回结果为集合，只需设置每一个的数据类型 -->
     <select id="getUserByUserName" parameterType="string" resultType="com.mybatis.edu.pojo.User">
         select
-            id,
-            username,
-            birthday,
-            sex,
-            address
+        <include refid="user_sql"/>
         from USER
         <!-- where username like #{name}-->
         where username like '%${value}%'
@@ -69,6 +71,100 @@
                 #{sex},
                 #{address});
     </insert>
+
+
+    <!-- #############################  升级内容 ###################################################### -->
+    <select id="getUserByQueryVo" parameterType="queryvo" resultType="com.mybatis.edu.pojo.User">
+        SELECT
+            id,
+            username,
+            birthday,
+            sex,
+            address
+        FROM `user`
+        WHERE username LIKE '%${user.username}%'
+    </select>
+
+
+    <select id="getUserByPojo" parameterType="user" resultType="com.mybatis.edu.pojo.User">
+        SELECT
+            id,
+            username,
+            birthday,
+            sex,
+            address
+        FROM `user`
+        <where>
+            <if test="username != null and username != ''">
+                and username LIKE '%${username}%'
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+        </where>
+    </select>
+
+    <!-- foreach的使用 -->
+    <select id="getUserByIds" parameterType="queryvo" resultType="user">
+        SELECT
+        <include refid="user_sql"/>
+        FROM `user`
+        <where>
+            <!-- foreach循环标签
+                 collection:要遍历的集合
+                 open:循环开始之前输出的内容
+                 item:设置循环变量
+                 separator:分隔符
+                 close:循环结束之后输出的内容 -->
+            <!-- 目的：id IN(1,25,29,30,35) -->
+            <foreach collection="ids" open="id IN(" item="uId" separator=","
+                     close=")">
+                #{uId}
+            </foreach>
+        </where>
+    </select>
+
+
+    <!-- 一对多关联查询 -->
+    <resultMap type="user" id="user_order_map">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="birthday" column="birthday" />
+        <result property="address" column="address" />
+        <result property="sex" column="sex" />
+
+        <!-- collection:配置一对多关系
+             property:用户下的order属性
+             ofType:property的数据类型，支持别名
+        -->
+        <collection property="orders" ofType="order">
+            <!-- id标签用于绑定主键 -->
+            <id property="id" column="oid"/>
+            <!-- 使用result绑定普通字段 -->
+            <result property="userId" column="id"/>
+            <result property="number" column="number"/>
+            <result property="createtime" column="createtime"/>
+        </collection>
+
+    </resultMap>
+
+    <!-- 一对多关联查询 -->
+    <select id="getUserOrder" resultMap="user_order_map">
+        SELECT
+            u.`id`,
+            u.`username`,
+            u.`birthday`,
+            u.`sex`,
+            u.`address`,
+            o.`id` oid,
+            o.`number`,
+            o.`createtime`
+        FROM `user` u
+        LEFT JOIN `order` o
+        ON o.`user_id` = u.`id`
+    </select>
+
+
 
 </mapper>
 

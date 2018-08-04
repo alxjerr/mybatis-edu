@@ -64,7 +64,7 @@
 			 1、映射文件与接口同一目录下
 			 2、映射文件名必需与接口文件名称一致
 		-->
-        <package name="om.mybatis.edu.mapper"/>
+        <package name="com.mybatis.edu.mapper"/>
 
     </mappers>
 
