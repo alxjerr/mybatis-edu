@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，用于隔离SQL语句，后续有重要作用
+     #{} : 占位符，相当于jdbc 的 ?
+     ${} : 字符串拼接指令
+ -->
+
+<!-- 动态代理开发规则：
+    1.namespace必须是接口的全路径名
+    2.接口的方法名必须与 sql id一致
+    3.接口的入参必须与parameterType类型一致
+    4.接口的返回值必须与resultType类型一致
+ -->
+<mapper namespace="com.mybatis.edu.mapper.UserMapper">
+
+    <!--
+        id:sql id,SQL语句的唯一标识
+        parameterType:入参的数据类型
+        resultType:返回结果的数据类型
+    -->
+    <select id="getUserById" parameterType="int" resultType="com.mybatis.edu.pojo.User">
+        select
+          id,
+          username,
+          birthday,
+          sex,
+          address
+        from USER
+        where id = #{id2}
+    </select>
+
+
+    <!-- 如果返回结果为集合，只需设置每一个的数据类型 -->
+    <select id="getUserByUserName" parameterType="string" resultType="com.mybatis.edu.pojo.User">
+        select
+            id,
+            username,
+            birthday,
+            sex,
+            address
+        from USER
+        <!-- where username like #{name}-->
+        where username like '%${value}%'
+    </select>
+
+    <!-- 插入用户 -->
+    <!-- useGeneratedKeys:使用自增 keyProperty与之配套使用，这里是user的主键 -->
+    <insert id="insertUser" parameterType="com.mybatis.edu.pojo.User" useGeneratedKeys="true" keyProperty="id">
+        <!--
+            selectKey：主键返回
+            keyProperty:user中的主键属性
+            resultType:主键数据类型
+            order:指定selectKey何时执行：AFTER之后 -->
+        <!--
+            <selectKey keyProperty="id" resultType="int" order="AFTER">
+                SELECT LAST_INSERT_ID()
+            </selectKey>
+        -->
+        INSERT INTO `user`
+            (`username`,
+            `birthday`,
+            `sex`,
+            `address`)
+        VALUES (#{username},
+                #{birthday},
+                #{sex},
+                #{address});
+    </insert>
+
+</mapper>
+
+
