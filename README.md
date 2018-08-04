@@ -1,7 +1,7 @@
 # mybatis-edu
 MyBatis学习案例
 
-##1.Jdbc访问数据库的过程
+## 1.Jdbc访问数据库的过程
 - 1.1 加载数据库驱动
 - 1.2 创建数据库连接
 - 1.3 创建statement
@@ -11,7 +11,7 @@ MyBatis学习案例
 - 1.7 解析结果集ResultSet
 - 1.8 释放资源
 
-##2.工程搭建
+## 2.工程搭建
 - 2.1 导入依赖jar包
 - 2.2 配置SqlMapConfig.xml
 - 2.3 配置log4j.properties
@@ -19,7 +19,7 @@ MyBatis学习案例
 - 2.5 配置SQL查询的映射文件
 - 2.6 加载映射文件
 
-##3.实现的需求
+## 3.实现的需求
 - 根据用户ID查询用户信息
 - 根据用户名查找用户列表
 - 添加用户
@@ -74,7 +74,7 @@ MyBatis学习案例
 - resultType:主键数据类型
 - order:指定selectKey何时执行：AFTER之后
 
-##4.动态代理Dao
+## 4.动态代理Dao
 #### 4.1 开发规则
 - namespace必需是接口的全路径名
 - 接口的方法名必需与映射文件的sql id一致
@@ -85,7 +85,7 @@ MyBatis学习案例
 - 创建UserMapper接口
 - 加载UserMapper.xml
 
-##5. SqlMapConf.xml配置
+## 5. SqlMapConf.xml配置
 SqlMapConfig.xml中的配置内容和顺序：
 - **properties**（属性） 
 - setting（全局配置参数）
@@ -99,7 +99,7 @@ SqlMapConfig.xml中的配置内容和顺序：
         - dataSource（数据源） 
 - **mappers**（映射器）        
         
-####5.1 properties    
+#### 5.1 properties    
 ````xml
 <!-- 加载规则，首先加载标签内部属性，再加载外部文件，名称相同时，会替换相同名称的内容 -->
 	<properties resource="jdbc.properties">
@@ -108,7 +108,7 @@ SqlMapConfig.xml中的配置内容和顺序：
 	</properties>
 
 ```` 
-####5.2 typeAliases 别名
+#### 5.2 typeAliases 别名
 - i.  mybatis默认支持java基本数据类型的别名
 - ii. 自定义别名：
 ````xml
@@ -119,7 +119,7 @@ SqlMapConfig.xml中的配置内容和顺序：
         <package name="com.mybatis.edu.pojo"/>
     </typeAliases>
 ````
-####5.3 mappers
+#### 5.3 mappers
 ````xml
     <!-- 加载映射文件 -->
     <mappers>
